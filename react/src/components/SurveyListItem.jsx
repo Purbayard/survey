@@ -1,8 +1,30 @@
+import { ArrowTopRightOnSquareIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 import React from "react"
+import Buttons from "./core/Buttons"
 
-function SurveyListItem({survey}) {
+function SurveyListItem({survey, onDeleteClick}) {
     return(
-        <div>SurveyListItem</div>
+        <div className="flex flex-col py-4 px-6 bg-white hover:bg-gray-50 h-[470px]">
+            <img src={survey.image_url} alt={survey.title} className="w-full h-48 object-cover" />
+            <h4 className="mt-4 text-lg font-bold">{survey.title}</h4>
+            <div dangerouslySetInnerHTML={{__html: survey.description}} className="overflow-hidden flex-1"></div>
+            <div className="flex justify-between items-center mt-3">
+                <Buttons to = {'survey/${survey.id}'}>
+                    <PencilIcon className="w-5 h-5 mr-2" />
+                    Edit
+                </Buttons>
+                <div className="flex items-center">
+                    <Buttons href = {'/view/survey/${survey.slug}'} circle link>
+                        <ArrowTopRightOnSquareIcon className="w-5 h-5"/>
+                    </Buttons>
+                    {survey.id && (
+                        <Buttons onClick = {onDeleteClick} circle link color="red">
+                            <TrashIcon className="w-5 h-5" />
+                        </Buttons>
+                    )}
+                </div>
+            </div>
+        </div>
     )
 }
 
