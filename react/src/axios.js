@@ -1,15 +1,17 @@
 import axios from 'axios'
+import router from './router'
 
-const axiosCLient  = axios.create({
+const axiosClient  = axios.create({
     baseURL : `${import.meta.env.VITE_API_BASE_URL}/api`
 })
 
-axiosCLient.interceptors.request.use((config) => {
+axiosClient.interceptors.request.use((config) => {
     const token = '123'
     config.headers.Authorization = `Bearer ${token}`
+    return config
 })
 
-axiosCLient.interceptors.response.use(response => {
+axiosClient.interceptors.response.use(response => {
     return response
 }, error => {
     if (error.response && error.response.status == 401) {
@@ -19,4 +21,4 @@ axiosCLient.interceptors.response.use(response => {
     throw error
 })
 
-export default axiosCLient
+export default axiosClient
