@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Navigate, NavLink, Outlet } from 'react-router-dom'
 import { useStateContext } from '../contexts/ContextProvider'
+import axiosClient from '../axios'
 
 const navigation = [
   { name: 'Dashboard', to: '/dashboard' },
@@ -14,7 +15,7 @@ function classNames(...classes) {
 }
 
 function DeafultLayout() {
-  const { currentUser, userToken } = useStateContext()
+  const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext()
 
   if(!userToken) {
     return <Navigate to = 'login' />
@@ -22,8 +23,13 @@ function DeafultLayout() {
 
   const logout = (event) => {
     event.preventDefault();
-    console.log("logout")
+    axiosClient.post('/login')
+    .then(res => {
+      setCurrentUser({})
+      setUserToken(null)
+    })
   }
+
   return (
     <>
       <div className="min-h-full">
